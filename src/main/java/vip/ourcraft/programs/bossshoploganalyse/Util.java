@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
  */
 public class Util {
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
-    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public static String readFile(File file) {
         if (!file.exists()) {
