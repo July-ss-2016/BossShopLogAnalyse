@@ -26,7 +26,6 @@ public class MainWindow {
     private JTextField priceFileTextField;
     private JTextField logFilePathTextField;
     private JButton cleanOldAnalysesButton;
-    private JTextArea textArea1;
 
     MainWindow() {
         runButton.addActionListener(e -> {
