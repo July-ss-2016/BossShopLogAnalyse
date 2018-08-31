@@ -26,6 +26,7 @@ public class MainWindow {
     private JTextField priceFileTextField;
     private JTextField logFilePathTextField;
     private JButton cleanOldAnalysesButton;
+    private JTextArea textArea1;
 
     MainWindow() {
         runButton.addActionListener(e -> {
@@ -96,6 +97,9 @@ public class MainWindow {
             if (headerRow == null) {
                 continue;
             }
+
+            // 重置全局数据
+            BossShopLogAnalyse.resetGlobalData();
 
             // 逐行统计
             for (String line : logLines.split(Util.LINE_SEPARATOR)) {
@@ -186,9 +190,9 @@ public class MainWindow {
                     Row row = firstColumnRows.get(itemIndex);
 
                     // 填充数据
-                    row.createCell(firstAnalyseHeader).setCellValue(Util.halfDownDouble(analyse.getTotalTradedPrice()) + "(" + Util.halfDownDouble(analyse.getPercentOfGlobalTradedPrice()) * 100 + "%)");
-                    row.createCell(firstAnalyseHeader + 1).setCellValue(analyse.getTotalTradedCount() + "(" + Util.halfDownDouble(analyse.getPercentOfGlobalTradedCount()) * 100 + "%)");
-                    row.createCell(firstAnalyseHeader + 2).setCellValue(analyse.getTradedPlayerCount() + "(" + Util.halfDownDouble(analyse.getPercentOfGlobalTradedPlayerCount()) * 100 + "%)");
+                    row.createCell(firstAnalyseHeader).setCellValue(Util.formatDouble(analyse.getTotalTradedPrice()) + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedPrice() * 100) + "%)");
+                    row.createCell(firstAnalyseHeader + 1).setCellValue(analyse.getTotalTradedCount() + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedCount() * 100) + "%)");
+                    row.createCell(firstAnalyseHeader + 2).setCellValue(analyse.getTradedPlayerCount() + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedPlayerCount() * 100) + "%)");
 
                     // 设置居中
                     row.getCell(firstAnalyseHeader).setCellStyle(CENTER_STYLE);
@@ -207,9 +211,10 @@ public class MainWindow {
         } catch (IOException e) {
             e.printStackTrace();
             sendErrorMsgBox(e.getMessage());
+            return;
         }
 
-        sendInfoMsgBox("更新文件成功!");
+        sendInfoMsgBox("更新文件完毕!");
     }
 
     private void cleanOldAnalyses() {
@@ -255,6 +260,12 @@ public class MainWindow {
             // 删除指定列
             for (int rowIndex = 0; rowIndex < sheet.getLastRowNum(); rowIndex++) {
                 for (int column : analyseColumns) {
+                    Row row = sheet.getRow(rowIndex);
+
+                    if (row == null) {
+                        continue;
+                    }
+
                     Cell cell = sheet.getRow(rowIndex).getCell(column);
 
                     if (cell != null) {
@@ -268,10 +279,11 @@ public class MainWindow {
             } catch (IOException e) {
                 e.printStackTrace();
                 sendErrorMsgBox(e.getMessage());
+                return;
             }
-
-            sendInfoMsgBox("清除旧统计信息成功!");
         }
+
+        sendInfoMsgBox("清除旧统计信息完毕!");
     }
 
     private void registerTextFieldDropTarget(JTextField textField) {

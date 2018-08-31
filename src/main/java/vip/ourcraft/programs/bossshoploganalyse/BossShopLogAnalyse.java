@@ -99,4 +99,11 @@ public class BossShopLogAnalyse {
     public int getTradedPlayerCount() {
         return tradedPlayers.size();
     }
+
+    public static void resetGlobalData() {
+        globalTotalTradedCount = 0;
+        globalTotalTradedPlayers = new ArrayList<>();
+        globalTotalTradedPrice = 0;
+
+    }
 }

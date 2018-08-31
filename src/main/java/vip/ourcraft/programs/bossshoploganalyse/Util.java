@@ -3,6 +3,7 @@ package vip.ourcraft.programs.bossshoploganalyse;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
 /**
@@ -35,9 +36,9 @@ public class Util {
         return sb.toString();
     }
 
-    public static double halfDownDouble(double d) {
-        BigDecimal bigDecimal = new BigDecimal(d);
+    public static double formatDouble(double d) {
+        BigDecimal bigDecimal = new BigDecimal(d).setScale(2, RoundingMode.UP);
 
-        return bigDecimal.setScale(2, RoundingMode.HALF_DOWN).doubleValue();
+        return bigDecimal.doubleValue();
     }
 }
