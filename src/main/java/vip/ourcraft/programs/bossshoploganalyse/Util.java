@@ -1,5 +1,11 @@
 package vip.ourcraft.programs.bossshoploganalyse;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -40,5 +46,27 @@ public class Util {
         BigDecimal bigDecimal = new BigDecimal(d).setScale(2, RoundingMode.UP);
 
         return bigDecimal.doubleValue();
+    }
+
+    public static void setCellValue(Cell cell, String value) {
+        setCellStyle(cell);
+        cell.setCellValue(value);
+    }
+
+    public static void setCellValue(Cell cell, double value) {
+        setCellStyle(cell);
+        cell.setCellValue(value);
+    }
+
+    private static void setCellStyle(Cell cell) {
+        Workbook workbook = cell.getRow().getSheet().getWorkbook();
+        CellStyle cellStyle = workbook.createCellStyle();
+        XSSFFont font = (XSSFFont) workbook.createFont();
+
+        font.setFontName("宋体");
+        font.setFontHeightInPoints((short) 11);
+        cellStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+        cellStyle.setFont(font);
+        cell.setCellStyle(cellStyle);
     }
 }

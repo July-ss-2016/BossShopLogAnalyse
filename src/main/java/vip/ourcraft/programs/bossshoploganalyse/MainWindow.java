@@ -143,17 +143,10 @@ public class MainWindow {
                 }
 
                 int firstAnalyseHeader = headerRow.getLastCellNum();
-                final CellStyle CENTER_STYLE = workbook.createCellStyle();
-
-                CENTER_STYLE.setAlignment(XSSFCellStyle.ALIGN_CENTER);
 
                 // 设置统计表头
                 for (int i = 0; i < XLSX_HEADERS.length; i++) {
-                    int index = firstAnalyseHeader + i;
-                    Cell cell = headerRow.createCell(index);
-
-                    cell.setCellValue("BSLA-" + logFile.getName() + "-" + XLSX_HEADERS[i]);
-                    cell.setCellStyle(CENTER_STYLE);
+                    Util.setCellValue(headerRow.createCell(firstAnalyseHeader + i), "BSLA-" + logFile.getName() + "-" + XLSX_HEADERS[i]);
                 }
 
                 HashMap<String, Row> firstColumnRows = new HashMap<>();
@@ -185,15 +178,12 @@ public class MainWindow {
                     if (firstColumnRows.containsKey(itemIndex)) {
                         Row row = firstColumnRows.get(itemIndex);
 
-                        // 填充数据
-                        row.createCell(firstAnalyseHeader).setCellValue(Util.formatDouble(analyse.getTotalTradedPrice()) + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedPrice() * 100) + "%)");
-                        row.createCell(firstAnalyseHeader + 1).setCellValue(analyse.getTotalTradedCount() + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedCount() * 100) + "%)");
-                        row.createCell(firstAnalyseHeader + 2).setCellValue(analyse.getTradedPlayerCount() + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedPlayerCount() * 100) + "%)");
-
-                        // 设置居中
-                        row.getCell(firstAnalyseHeader).setCellStyle(CENTER_STYLE);
-                        row.getCell(firstAnalyseHeader + 1).setCellStyle(CENTER_STYLE);
-                        row.getCell(firstAnalyseHeader + 2).setCellStyle(CENTER_STYLE);
+                        row.createCell(firstAnalyseHeader);
+                        row.createCell(firstAnalyseHeader + 1);
+                        row.createCell(firstAnalyseHeader + 2);
+                        Util.setCellValue(row.getCell(firstAnalyseHeader), Util.formatDouble(analyse.getTotalTradedPrice()) + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedPrice() * 100) + "%)");
+                        Util.setCellValue(row.getCell(firstAnalyseHeader + 1), analyse.getTotalTradedCount() + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedCount() * 100) + "%)");
+                        Util.setCellValue(row.getCell(firstAnalyseHeader + 2), analyse.getTradedPlayerCount() + "(" + Util.formatDouble(analyse.getPercentOfGlobalTradedPlayerCount() * 100) + "%)");
                     }
                 }
 
